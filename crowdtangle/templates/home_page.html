@@ -2,18 +2,70 @@
 {% block main %}
     <div id="header">
         <h1 class="title">Crowd tangle API</h1>
-            Hi, This is what's been stored from the API!
+            Hi, Click here to get the latest from the crowdtangle Posts API!
             <form name="api_form" class="api_form" action="{% url 'hit_api' %}" method="post">
                 {% csrf_token %}
-                <input type="submit" name="submit" value="Get API Update">
+                <input type="submit" name="submit" value="Get API Update" color="blue">
             </form>
-        <table>
-           <th> The currently stored data:</th>
+    <h2>The currently stored data:</h2>
+        <table cellpadding="1" cellspacing="2" border="3">
+
+            <tr>
+                <td>ID</td><td>Platform</td><td>date</td><td>Type</td>
+                <td>Message</td><td>Media Type</td><td>Expected Statistics</td>
+                <td>Actual Statistics</td>
+            </tr>
             {% for row in data %}
             <tr>
                 <td>
-                    {{ row.message }}
-{#                    <a href="{% url 'delete_item' row.id %}" class="delete_item">delete</a>#}
+                    {{ row.api_id }}
+                </td>
+                <td>
+                    {{ row.platform }}
+                </td>
+                <td>
+                    {{ row.date }}
+                </td>
+                <td>
+                    {{ row.type }}
+                </td>
+                <td>
+                    {{ row.message }}<a href={{ row.link }}>{{ row.link }}</a>
+                </td>
+                <td>
+                    {% for media in row.media_set.all %}
+                        {{ media.type }}
+                    {% endfor %}
+                </td>
+                <td>
+                    <table cellpadding="1" cellspacing="2" border="1">
+                        <tr>
+                            <td>Expected Statistics:  like count</td>
+                            <td>share count</td>
+                            <td>comment count</td>
+                        </tr>
+                        <tr>
+                            <td>{{ row.exp_statistics.likeCount }}</td>
+                            <td>{{ row.exp_statistics.shareCount }}</td>
+                            <td>{{ row.exp_statistics.commentCount }}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table cellpadding="1" cellspacing="2" border="1">
+                        <tr>
+                            <td>Actual Statistics:  like count</td>
+                            <td>share count</td>
+                            <td>comment count</td>
+                        </tr>
+                        <tr>
+                            <td>{{ row.act_statistics.likeCount }}</td>
+                            <td>{{ row.act_statistics.shareCount }}</td>
+                            <td>{{ row.act_statistics.commentCount }}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
                     <a href="{% url 'delete_item' row.id %}" id={{ row.id }} class="subscribe">delete</a>
                 </td>
             </tr>

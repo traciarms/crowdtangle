@@ -2,12 +2,12 @@ import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 
-from APIPosts.models import APIData
+from APIPosts.models import APIData, Media, ActualStatistics, \
+    ExpectedStatistics, Account
 from crowdtangle.local_settings import API_KEY
 
 
 def hit_api(request):
-    context = {}
 
     if request.method == 'POST':
         headers = {'x-api-token': API_KEY}
@@ -22,9 +22,10 @@ def hit_api(request):
 
                 for post in posts:
                     try:
-                        # if we found the item - then make updates
+                        # if we found the item - then make just update
                         api_data = APIData.objects.get(api_id=post.get('id'))
                     except ObjectDoesNotExist:
+                        # if the item wasn't found - create it
                         api_data = APIData()
                         api_data.api_id = post.get('id')
 
@@ -39,12 +40,51 @@ def hit_api(request):
                     api_data.score = post.get('score')
                     api_data.save()
 
-        data = APIData.objects.all()
-        context = {'data': data}
+                    media_list = post.get('media')
+                    for item in media_list:
+                        media = Media()
+                        media.api_data = api_data
+                        media.type = item.get('type')
+                        media.url = item.get('url')
+                        media.height = item.get('height')
+                        media.width = item.get('width')
+                        media.full = item.get('full')
+                        media.save()
 
-    else:
-        data = APIData.objects.all()
-        context = {'data': data}
+                    a_stats = ActualStatistics()
+                    actual_dict = post.get('statistics').get('actual')
+                    a_stats.likeCount = actual_dict.get('likeCount')
+                    a_stats.shareCount = actual_dict.get('shareCount')
+                    a_stats.commentCount = actual_dict.get('commentCount')
+                    a_stats.save()
+                    api_data.act_statistics = a_stats
+
+                    e_stats = ExpectedStatistics()
+                    expected_dict = post.get('statistics').get('expected')
+                    e_stats.likeCount = expected_dict.get('likeCount')
+                    e_stats.shareCount = expected_dict.get('shareCount')
+                    e_stats.commentCount = expected_dict.get('commentCount')
+                    e_stats.save()
+                    api_data.exp_statistics = e_stats
+                    api_data.save()
+
+                    account = Account()
+                    account.api_data = api_data
+                    account_dict = post.get('account')
+                    account.api_id = account_dict.get('id')
+                    account.name = account_dict.get('name')
+                    account.handle = account_dict.get('handle')
+                    account.profileImage = account_dict.get('profileImage')
+                    account.subscriberCount = account_dict.get('subscriberCount')
+                    account.url = account_dict.get('url')
+                    account.platform = account_dict.get('platform')
+                    account.verified = account_dict.get('verified')
+                    account.save()
+
+
+
+    data = APIData.objects.all().order_by('date')
+    context = {'data': data}
 
     return render(request, 'home_page.html', context)
 
@@ -52,7 +92,6 @@ def hit_api(request):
 def delete_item(request, row_id):
     context = {}
 
-    # if request.method == 'POST':
     try:
         delete_obj = APIData.objects.get(id=row_id)
         delete_obj.delete()
