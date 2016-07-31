@@ -147,3 +147,9 @@ BOOTSTRAP3 = {
     #  (affects django-bootstrap3 template tags)
     'include_jquery': True,
 }
+
+try:
+    from .local_settings import *
+except ImportError:
+    print('local_settings not found')
+

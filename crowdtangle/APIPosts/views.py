@@ -3,13 +3,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 
 from APIPosts.models import APIData
+from crowdtangle.local_settings import API_KEY
 
 
 def hit_api(request):
     context = {}
 
     if request.method == 'POST':
-        headers = {'x-api-token': '2xpyFYUqGbuNPzkbhmGVYHMiskH6A46kTL5bSkg8'}
+        headers = {'x-api-token': API_KEY}
         response = requests.get('https://api.crowdtangle.com/posts.json',
                                 headers=headers)
 
