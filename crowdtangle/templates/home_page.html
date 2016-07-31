@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block main %}
+    <div id="header">
+        <h1 class="title">Crowd tangle API</h1>
+            Hi, This is what's been stored from the API!
+            <form name="api_form" class="api_form" action="{% url 'hit_api' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" name="submit" value="Get API Update">
+            </form>
+        <table>
+           <th> The currently stored data:</th>
+            {% for row in data %}
+            <tr>
+                <td>
+                    {{ row.message }}
+{#                    <a href="{% url 'delete_item' row.id %}" class="delete_item">delete</a>#}
+                    <a href="{% url 'delete_item' row.id %}" id={{ row.id }} class="subscribe">delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+
+

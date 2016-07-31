@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'APIPosts',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -55,7 +57,7 @@ ROOT_URLCONF = 'crowdtangle.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,4 +120,30 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
+
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_DIR, 'static'),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+BOOTSTRAP3 = {
+    # The URL to the jQuery JavaScript file
+    'jquery_url': '/static/jquery-2.1.4.min.js',
+
+    # The Bootstrap base URL
+    'base_url': '/static/bootstrap/',
+
+    # The complete URL to the Bootstrap CSS file (None means no theme)
+    'theme_url': '/static/bootstrap/css/sandstone.css',
+
+    # Include jQuery with Bootstrap JavaScript
+    #  (affects django-bootstrap3 template tags)
+    'include_jquery': True,
+}
