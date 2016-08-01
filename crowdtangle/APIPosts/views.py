@@ -66,10 +66,8 @@ def hit_api(request):
                     e_stats.commentCount = expected_dict.get('commentCount')
                     e_stats.save()
                     api_data.exp_statistics = e_stats
-                    api_data.save()
 
                     account = Account()
-                    account.api_data = api_data
                     account_dict = post.get('account')
                     account.api_id = account_dict.get('id')
                     account.name = account_dict.get('name')
@@ -80,8 +78,8 @@ def hit_api(request):
                     account.platform = account_dict.get('platform')
                     account.verified = account_dict.get('verified')
                     account.save()
-
-
+                    api_data.account = account
+                    api_data.save()
 
     data = APIData.objects.all().order_by('date')
     context = {'data': data}
@@ -89,8 +87,10 @@ def hit_api(request):
     return render(request, 'home_page.html', context)
 
 
-def delete_item(request, row_id):
+def delete_item(request):
     context = {}
+
+    row_id = request.POST.get('row_id')
 
     try:
         delete_obj = APIData.objects.get(id=row_id)
@@ -98,6 +98,6 @@ def delete_item(request, row_id):
     except ObjectDoesNotExist:
         pass
 
-    context['data'] = APIData.objects.all()
+    context['data'] = APIData.objects.all().order_by('date')
 
     return render(request, 'home_page.html', context)

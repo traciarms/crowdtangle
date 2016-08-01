@@ -3,15 +3,18 @@
  */
 // AJAX for posting
 function post_api() {
-    var url = $('form.api_form').attr('action');
+    var csrftoken = $('[name=csrfmiddlewaretoken]').val();
 
     $.ajax({
-        url: url,
+        url: '/hit_api/',
         type: "POST", // http method
+        data: {'csrfmiddlewaretoken': csrftoken},
 
         // handle a successful response
         success : function(json) {
-            console.log('post was a success')
+            console.log('hit api was a success');
+            var rows = $('table.data tr');
+            rows.show()
         },
 
         // handle a non-successful response
@@ -22,22 +25,27 @@ function post_api() {
 }
 
 // handle button click
-$('#api_form').submit(function( event) {
+$('#api-form').submit(function( event) {
     event.preventDefault();
-
     post_api();
+
 });
 
 // AJAX for posting
-function post_delete(url) {
+function post_delete(row_id) {
+    var csrftoken = $('[name=csrfmiddlewaretoken]').val();
     console.log('here in the post_delete method');
     $.ajax({
-        url: url,
+        url: "/delete_item/",
+        data: {'row_id': row_id,
+               'csrfmiddlewaretoken': csrftoken},
         type: "POST", // http method
 
         // handle a successful response
         success : function(json) {
-            console.log('post was a success')
+            var table_row = $('#table-row-'+row_id);
+            table_row.hide();
+            console.log('delete was a success')
         },
 
         // handle a non-successful response
@@ -49,12 +57,10 @@ function post_delete(url) {
 }
 
 // handle delete link click
-$('.delete_item').click(function( event){
+$('.delete_item').click(function(event){
     event.preventDefault();
-    console.log('here in the delete click');
-    var url = $('.delete_item').attr('href');
-    alert('the url is {}'.format(url));
-    
-    post_delete(url);
+    var row_id = $(this).attr('id');
+
+    post_delete(row_id);
 
 });
