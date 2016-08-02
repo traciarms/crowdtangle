@@ -12,12 +12,8 @@
         <table class="data" cellpadding="1" cellspacing="2" border="3">
 
             <tr>
-                <td></td><td>ID</td><td>Platform</td><td>date</td><td>Type</td>
+                <td>Delete</td><td>ID</td><td>Platform</td><td>date</td><td>Type</td>
                 <td>Message</td>
-{#                <td>Subscriber Count</td><td>Score</td>#}
-{#                <td>Media Type</td>#}
-{#                <td>Expected Statistics</td>#}
-{#                <td>Actual Statistics</td><td>Account</td>#}
             </tr>
             {% for row in data %}
                 <tr id="table-row-{{ row.id }}">
@@ -39,84 +35,6 @@
                     <td>
                         {{ row.message }}<a href={{ row.link }}>{{ row.link }}</a>
                     </td>
-{#                    <td>#}
-{#                        {{ row.subscriberCount }}#}
-{#                    </td>#}
-{#                    <td>#}
-{#                        {{ row.score }}#}
-{#                    </td>#}
-{#                    <td>#}
-{#                        <table cellpadding="1" cellspacing="2" border="1">#}
-{#                            <tr>#}
-{#                                <td>type</td>#}
-{#                                <td>url</td>#}
-{#                                <td>height</td>#}
-{#                                <td>width</td>#}
-{#                                <td>full</td>#}
-{#                            </tr>#}
-{#                            {% for media in row.media_set.all %}#}
-{#                                <tr>#}
-{#                                    <td>{{ media.type }}</td>#}
-{#                                    <td>{{ media.url }}</td>#}
-{#                                    <td>{{ media.height }}</td>#}
-{#                                    <td>{{ media.width }}</td>#}
-{#                                    <td>{{ media.full }}</td>#}
-{#                                </tr>#}
-{#                            {% endfor %}#}
-{#                        </table>#}
-{#                    </td>#}
-{#                    <td>#}
-{#                        <table cellpadding="1" cellspacing="2" border="1">#}
-{#                            <tr>#}
-{#                                <td>like count</td>#}
-{#                                <td>share count</td>#}
-{#                                <td>comment count</td>#}
-{#                            </tr>#}
-{#                            <tr>#}
-{#                                <td>{{ row.exp_statistics.likeCount }}</td>#}
-{#                                <td>{{ row.exp_statistics.shareCount }}</td>#}
-{#                                <td>{{ row.exp_statistics.commentCount }}</td>#}
-{#                            </tr>#}
-{#                        </table>#}
-{#                    </td>#}
-{#                    <td>#}
-{#                        <table cellpadding="1" cellspacing="2" border="1">#}
-{#                            <tr>#}
-{#                                <td>like count</td>#}
-{#                                <td>share count</td>#}
-{#                                <td>comment count</td>#}
-{#                            </tr>#}
-{#                            <tr>#}
-{#                                <td>{{ row.act_statistics.likeCount }}</td>#}
-{#                                <td>{{ row.act_statistics.shareCount }}</td>#}
-{#                                <td>{{ row.act_statistics.commentCount }}</td>#}
-{#                            </tr>#}
-{#                        </table>#}
-{#                    </td>#}
-{#                    <td>#}
-{#                        <table cellpadding="1" cellspacing="2" border="1">#}
-{#                            <tr>#}
-{#                                <td>id</td>#}
-{#                                <td>name</td>#}
-{#                                <td>handle</td>#}
-{#                                <td>profileImage</td>#}
-{#                                <td>subscriberCount</td>#}
-{#                                <td>url</td>#}
-{#                                <td>platform</td>#}
-{#                                <td>verified</td>#}
-{#                            </tr>#}
-{#                            <tr>#}
-{#                                <td>{{ row.account.api_id }}</td>#}
-{#                                <td>{{ row.account.name }}</td>#}
-{#                                <td>{{ row.account.handle }}</td>#}
-{#                                <td>{{ row.account.profileImage }}</td>#}
-{#                                <td>{{ row.account.subscriberCount }}</td>#}
-{#                                <td>{{ row.account.url }}</td>#}
-{#                                <td>{{ row.account.platform }}</td>#}
-{#                                <td>{{ row.account.verified }}</td>#}
-{#                            </tr>#}
-{#                        </table>#}
-{#                    </td>#}
                 </tr>
             {% endfor %}
         </table>

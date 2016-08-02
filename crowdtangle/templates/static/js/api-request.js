@@ -11,10 +11,11 @@ function post_api() {
         data: {'csrfmiddlewaretoken': csrftoken},
 
         // handle a successful response
-        success : function(json) {
+        success : function(data) {
             console.log('hit api was a success');
             var rows = $('table.data tr');
-            rows.show()
+            rows.show();
+            $("#header").html(data);
         },
 
         // handle a non-successful response
@@ -23,6 +24,7 @@ function post_api() {
         }
     });
 }
+
 
 // handle button click
 $('#api-form').submit(function( event) {
